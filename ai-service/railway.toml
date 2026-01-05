@@ -1,0 +1,18 @@
+# Railway configuration for Food Buddy AI Service
+# This file tells Railway how to build and run the service
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# Environment variables are set in the Railway dashboard
+# Required:
+# - OPENAI_API_KEY (for semantic search)
+# - ANTHROPIC_API_KEY (for cultural context)
+# - PINECONE_API_KEY (for vector search)

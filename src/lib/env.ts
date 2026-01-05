@@ -28,6 +28,11 @@ export const env = {
     name: 'Food Buddy',
   },
   
+  // AI Service
+  aiService: {
+    url: getEnvVar('NEXT_PUBLIC_AI_SERVICE_URL', false) || 'http://localhost:8000',
+  },
+  
   // Feature flags
   features: {
     enableAI: getEnvVar('ENABLE_AI_FEATURES', false) === 'true',
@@ -35,3 +40,31 @@ export const env = {
 } as const;
 
 export type Env = typeof env;
+
+/**
+ * Check if required environment variables are set
+ */
+export function validateEnv(): { valid: boolean; missing: string[] } {
+  const required = [
+    'NEXT_PUBLIC_SUPABASE_URL',
+    'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    'NEXT_PUBLIC_MAPBOX_TOKEN',
+  ];
+
+  const missing = required.filter((key) => !process.env[key]);
+
+  return {
+    valid: missing.length === 0,
+    missing,
+  };
+}
+
+/**
+ * Check if we're in development mode
+ */
+export const isDev = process.env.NODE_ENV === 'development';
+
+/**
+ * Check if we're in production mode
+ */
+export const isProd = process.env.NODE_ENV === 'production';
